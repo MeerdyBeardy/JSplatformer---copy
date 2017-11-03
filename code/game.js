@@ -272,8 +272,7 @@ Level.prototype.animate = function(step, keys) {
    // Do this by looping across the step size, subtracing either the
    // step itself or 100 milliseconds
     step -= thisStep;
-  }
-};
+  22};
 
 Lava.prototype.act = function(step, level) {
   var newPos = this.pos.plus(this.speed.times(step));
@@ -290,7 +289,7 @@ var maxStep = 0.05;
 
 var wobbleSpeed = 8, wobbleDist = 0.07;
 
-Coin.prototype.act = function(step) {
+Coin.prototype.act = function(step) { 
   this.wobble += step * wobbleSpeed;
   var wobblePos = Math.sin(this.wobble) * wobbleDist;
   this.pos = this.basePos.plus(new Vector(0, wobblePos));
@@ -328,8 +327,8 @@ Player.prototype.moveX = function(step, level, keys) {
     this.pos = newPos;
 };
 
-var gravity = 30;
-var jumpSpeed = 17;
+var gravity = 22;
+var jumpSpeed = 15;
 
 Player.prototype.moveY = function(step, level, keys) {
   // Accelerate player downward (always)
