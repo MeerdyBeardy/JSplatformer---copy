@@ -1,9 +1,9 @@
 // Map each class of actor to a character
 var actorChars = {
   "@": Player,
-  "o": Coin, // A coin will wobble up and down
   "=": Lava, "|": Lava, "v": Lava,  
-  "$": Sludge
+  "$": Sludge,
+  "%": Flag
 };
 
 function Level(plan) {
@@ -41,6 +41,8 @@ function Level(plan) {
         fieldType = "lava";
 	  else if (ch == "$")
 		fieldType = "sludge";
+	  else if (ch == "%")
+		  fieldType == "flag";
 
       // "Push" the fieldType, which is a string, onto the gridLine array (at the end).
       gridLine.push(fieldType);
@@ -81,22 +83,20 @@ function Player(pos) {
   this.size = new Vector(0.8, 1.5);
   this.speed = new Vector(0, 0);
 }
-Player.prototype.type = "player";
-
-// Add a new actor type as a class
-function Coin(pos) {
-  this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
-  this.size = new Vector(0.6, 0.6);
-  // Make it go back and forth in a sine wave.
-  this.wobble = Math.random() * Math.PI * 2;
-}
-Coin.prototype.type = "coin";
+Player.prototype.type = "player"; 
 
 function Sludge(pos) {
 	this.pos = pos;
 	this.size = new Vector(1, 1);
 }
 Sludge.prototype.type = "sludge";
+
+function Flag(pos) {
+  this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
+  this.size = new Vector(1, 1);
+  this.wobble = Math.random() * Math.PI * 2;
+}
+Flag.prototype.type = "flag";
 
 // Lava is initialized based on the character, but otherwise has a
 // size and position
@@ -114,7 +114,7 @@ function Lava(pos, ch) {
     this.speed = new Vector(0, 3);
     this.repeatPos = pos;
   }
-}
+} 
 Lava.prototype.type = "lava";
 
 // Helper function to easily create an element of a type provided 
@@ -308,11 +308,11 @@ var maxStep = 0.05;
 
 var wobbleSpeed = 8, wobbleDist = 0.07;
 
-Coin.prototype.act = function(step) {
+Flag.prototype.act = function(step) {
   this.wobble += step * wobbleSpeed;
   var wobblePos = Math.sin(this.wobble) * wobbleDist;
   this.pos = this.basePos.plus(new Vector(0, wobblePos));
-};
+}
 
 var maxStep = 0.05;
 
@@ -334,6 +334,11 @@ Player.prototype.moveX = function(step, level, keys) {
   else
     // Move if there's not an obstacle there.
     this.pos = newPos;
+  /*if(level.playerTouched(sludge))
+	  this.speed.x = 4;*/
+  //why isn't the sludge recognized as an obstacle???
+  //Want to make the player slow down
+  //This is not how i do it isn't it?
 };
 
 var gravity = 30;
@@ -380,13 +385,13 @@ Level.prototype.playerTouched = function(type, actor) {
   if (type == "lava" && this.status == null) {
     this.status = "lost";
     this.finishDelay = 1;
-  } else if (type == "coin") {
+  } else if (type == "flag") {
     this.actors = this.actors.filter(function(other) {
       return other != actor;
     });
     // If there aren't any coins left, player wins
     if (!this.actors.some(function(actor) {
-           return actor.type == "coin";
+           return actor.type == "flag";
          })) {
       this.status = "won";
       this.finishDelay = 1;
