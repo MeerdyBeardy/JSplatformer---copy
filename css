@@ -1,11 +1,12 @@
-.background    { background-image: url('http://wallpapercraft.net/wp-content/uploads/2016/11/pixel-wallpapers/pixel-wallpapers12.jpg');
+.background    { background-image: url('https://68.media.tumblr.com/5bbb739bde3c230ce2c29b7d2c85f66f/tumblr_n5drq20DQc1slatixo1_500.gif');
 				 background-color: #cccccc;
                  table-layout: fixed;
                  border-spacing: 0;   }
 .background td { padding: 0;          }
-.lava          { background: rgb(255, 100, 100); }
+.lava          { background: rgb(255, 128, 0); }
 .wall          { background: white;   }
 .sludge		   { background: rgb(0, 255, 128);}
+.flag		   { background: rgb(255, 0, 0)}
 
 .actor  { position: absolute;  }
 .coin   { background: rgb(241, 229, 89); }
